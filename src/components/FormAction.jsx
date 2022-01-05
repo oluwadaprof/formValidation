@@ -28,7 +28,7 @@ import React, {useState, useEffect} from 'react';
 
     const validateUsername= () => {
         if (!formValues.username) {
-            setFormErrors((prevState) =>({...prevState, username:"Username is required" })) 
+            setFormErrors((prevState) =>({...prevState, username:"Username is required!" })) 
         } else  {
             setFormErrors((prevState)=> ({...prevState,username:" "}))
         }
@@ -37,18 +37,20 @@ import React, {useState, useEffect} from 'react';
     const validateEmail= () => {
         const emailPattern =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        if (!formValues.email || !emailPattern.test(formValues.email)) {
-            setFormErrors((prevState) =>({...prevState, email:"Email is required" })) 
-        }  else  {
+        if (!formValues.email || !emailPattern.test(formValues.email) ) {
+            setFormErrors((prevState) =>({...prevState, email:"Email is required!" })) 
+        }  else {
             setFormErrors((prevState)=> ({...prevState,email:" "}))
-        } 
-        
+        }
+       
        
     }
     const validatePassword= () => {
-        if (!formValues.password) {
-            setFormErrors((prevState) =>({...prevState, password:"Password is required" })) 
-        } else  {
+        if (!formValues.password ) {
+            setFormErrors((prevState) =>({...prevState, password:"Password is required!" })) 
+        } else if (formValues.password.length < 4){
+            setFormErrors((prevState) =>({...prevState, password:"Password must be more than 4!" })) 
+        } else {
             setFormErrors((prevState)=> ({...prevState, password:" "}))
         }
        
@@ -76,7 +78,7 @@ import React, {useState, useEffect} from 'react';
 
     return (
         <div className='form-container'>
-            <pre>{JSON.stringify(formValues, undefined, 2)}</pre>
+            {/* <pre>{JSON.stringify(formValues, undefined, 2)}</pre> */}
             <h1 >Login Form</h1>
             <hr className='divider' />
             <form onSubmit={handleSubmit}>
@@ -87,12 +89,12 @@ import React, {useState, useEffect} from 'react';
 
                 <label>Email</label>
                     <input placeholder='email' 
-                    type='email' name="email" value={formValues.email} onChange={handleChange}/>
+                    type='email' name="email" onBlur={validateEmail} value={formValues.email} onChange={handleChange}/>
                     <p>{formErrors?.email}</p>
 
                 <label>Password</label>
                     <input placeholder='password' 
-                    type='password'name="password"  value={formValues.password} onChange={handleChange}/>
+                    type='password'name="password"  onBlur={validatePassword} value={formValues.password} onChange={handleChange}/>
                     <p>{formErrors?.password}</p>
                 <button>Submit</button>
             </form>

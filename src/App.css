@@ -35,9 +35,10 @@ form {
 input {
     width: 25em;
     height: 3em;
-    margin-bottom: .9em;
+    margin-bottom: .3em;
     border: 1px gray solid;
     border-radius: .25em;
+    padding: 1em;
 }
 
 input::placeholder {
@@ -50,18 +51,15 @@ input:focus {
     padding: 1em;
 }
 
-input:nth-child(0) {
-    font-size: 20px;
-    margin-left: 1em;
-}
-
 p {
     color: red;
+    font-size: small;
 }
 
 label {
     font-weight: bolder;
     margin-bottom: .2em;
+    margin-top: .5em;
 }
 
 button {
