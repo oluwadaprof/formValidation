@@ -8,6 +8,7 @@ import React, {useState, useEffect} from 'react';
 
     const handleChange = (e) => {
         const {name, value} = e.target;
+        console.log(e.target.value)
         setFormValues({...formValues, [name]: value});
     
     };
@@ -15,15 +16,22 @@ import React, {useState, useEffect} from 'react';
     const handleSubmit = (e) => {
         e.preventDefault();
         validate();
-        setIsSubmit(true);
+        setIsSubmit(true);  
+      
     }
+
+    // const success = () => {
+    //    if( Object.keys(validate).length  === 0 && isSubmit) {
+    //     <div className="sign-in-success">Signed in successfully</div>
+    //    }
+    
+    // }
 
     useEffect(() => {
         console.log(formErrors)
         if(Object.keys(formErrors).length === 0 && isSubmit){
             console.log(formValues)
-        }
-       
+        } 
     }, [formErrors]);
 
     const validateUsername= () => {
@@ -42,30 +50,26 @@ import React, {useState, useEffect} from 'react';
         }  else {
             setFormErrors((prevState)=> ({...prevState,email:" "}))
         }
-       
-       
     }
     const validatePassword= () => {
         if (!formValues.password ) {
             setFormErrors((prevState) =>({...prevState, password:"Password is required!" })) 
         } else if (formValues.password.length < 4){
             setFormErrors((prevState) =>({...prevState, password:"Password must be more than 4!" })) 
-        } else {
+        } else if (formValues.password.length > 10) {
+            setFormErrors((prevState)=> ({...prevState, password:"Password must be less than 10! "}))
+        } else{
             setFormErrors((prevState)=> ({...prevState, password:" "}))
-        }
-       
+        } 
     }
 
     const validate = () => {
-        
-        // const regex = /^[^\$@]+@[^\$@]+\.[^\$@]{2,}$/i;
         validateUsername()
         validateEmail()
-        validatePassword()
+        validatePassword() 
         // if (!values.username){
         //     errors.username = "Email is required";
         // }
-
         // if (!values.email){
         //     errors.email = "Email is required";
         // }
@@ -74,31 +78,41 @@ import React, {useState, useEffect} from 'react';
         // }
         // return errors;
     };
+    
+   
 
 
     return (
-        <div className='form-container'>
-            {/* <pre>{JSON.stringify(formValues, undefined, 2)}</pre> */}
-            <h1 >Login Form</h1>
-            <hr className='divider' />
-            <form onSubmit={handleSubmit}>
-                <label>Username</label>
-                    <input placeholder='username'
-                     type='text' name="username" onBlur={validateUsername} value={formValues.username} onChange={handleChange}/>
-                    <p>{formErrors?.username}</p>
+        <>
+            {Object.keys(validate).length  === 0 && isSubmit ? 
+                (<div className="sign-in-success">Signed in successfully</div>) : <pre>{JSON.stringify(formValues, undefined, 2)}</pre>}
+                
+                <div className='form-container'>
+                    {/* <pre>{JSON.stringify(formValues, undefined, 2)}</pre> */}
+                
+                    <h1 >Login Form</h1>
+                    <hr className='divider' />
+                    <form onSubmit={handleSubmit}  >
+                        <label>Username</label>
+                            <input placeholder='username'
+                            type='text' name="username" onBlur={validateUsername} 
+                            value={formValues.username} onChange={handleChange}/>
+                            <p>{formErrors?.username}</p>
 
-                <label>Email</label>
-                    <input placeholder='email' 
-                    type='email' name="email" onBlur={validateEmail} value={formValues.email} onChange={handleChange}/>
-                    <p>{formErrors?.email}</p>
+                        <label>Email</label>
+                            <input placeholder='email' 
+                            type='email' name="email" onBlur={validateEmail} value={formValues.email} onChange={handleChange}/>
+                            <p>{formErrors?.email}</p>
 
-                <label>Password</label>
-                    <input placeholder='password' 
-                    type='password'name="password"  onBlur={validatePassword} value={formValues.password} onChange={handleChange}/>
-                    <p>{formErrors?.password}</p>
-                <button>Submit</button>
-            </form>
-        </div>
+                        <label>Password</label>
+                            <input placeholder='password' 
+                            type='password'name="password"  onBlur={validatePassword} value={formValues.password} onChange={handleChange}/>
+                            <p>{formErrors?.password}</p>
+                        <button>Submit</button>
+                    </form>
+                </div>
+        </>
+        
     )
 }
 export default FormAction;
